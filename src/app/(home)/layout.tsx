@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 
 import { Header } from "@/components/common/Header";
+import { MainLayout } from "@/components/layout/MainLayout";
 
 export const metadata: Metadata = {
   title: "GameMate | 運命のトリガー",
@@ -11,7 +12,7 @@ export default function HomeLayout({ children }: { children: React.ReactNode }) 
   return (
     <div>
       <Header />
-      {children}
+      <MainLayout>{children}</MainLayout>
     </div>
   );
 }
