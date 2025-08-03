@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist_Mono } from "next/font/google";
 import { Noto_Sans_JP } from "next/font/google";
 
+import { Toaster } from "@/components/ui/sonner";
+
 import "./stylesheets/reset.css";
 import "./stylesheets/globals.css";
 
@@ -30,6 +32,7 @@ export default function RootLayout({
     <html lang="ja">
       <body className={`${notoSansJp.className} ${geistMono.variable} antialiased`}>
         {children}
+        <Toaster />
       </body>
     </html>
   );
