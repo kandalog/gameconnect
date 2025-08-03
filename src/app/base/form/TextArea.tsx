@@ -1,8 +1,8 @@
 import React, { TextareaHTMLAttributes } from "react";
 
-type Props = TextareaHTMLAttributes<HTMLTextAreaElement> & {
+type Props = {
   className?: string;
-};
+} & TextareaHTMLAttributes<HTMLTextAreaElement>;
 
 export const TextArea = ({ className, ...props }: Props) => {
   return (

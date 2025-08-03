@@ -4,6 +4,7 @@ import { Card } from "@/app/base/Card";
 import { FormRow } from "@/app/base/form/FormRow";
 import { Input } from "@/app/base/form/Input";
 import { Label } from "@/app/base/form/Label";
+import { Radio } from "@/app/base/form/Radio";
 import { TextArea } from "@/app/base/form/TextArea";
 import { Button } from "@/components/ui/button";
 
@@ -19,7 +20,8 @@ export const FormSection = () => {
           </FormRow>
           <FormRow>
             <Label>性別</Label>
-            <Input />
+            <Radio icon="♂" label="男性" />
+            <Radio className="ml-2" icon="♀" checkedBorderColor="red" label="女性" />
           </FormRow>
           <FormRow>
             <Label>表示期間</Label>

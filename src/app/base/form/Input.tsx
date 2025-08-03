@@ -2,7 +2,7 @@ import React from "react";
 
 type Props = {
   className?: string;
-} & React.InputHTMLAttributes<HTMLInputElement>;
+} & Omit<React.InputHTMLAttributes<HTMLInputElement>, "type">;
 
 export const Input = ({ className, ...props }: Props) => {
   return (
