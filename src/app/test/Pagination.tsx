@@ -4,17 +4,9 @@ type Props = {
   currentPage: number;
   onClickPagination: (id: number) => void;
   totalPages: number;
-  hasPrev: boolean;
-  hasNext: boolean;
 };
 
-export const Pagination = ({
-  currentPage,
-  onClickPagination,
-  hasPrev,
-  hasNext,
-  totalPages,
-}: Props) => {
+export const Pagination = ({ currentPage, onClickPagination, totalPages }: Props) => {
   const pageNumbers = calPageNumbers(currentPage, totalPages);
   function calPageNumbers(currentPage: number, totalPages: number): number[] {
     const pageNumbers = [];
@@ -38,11 +30,7 @@ export const Pagination = ({
 
   return (
     <div className="border text-center">
-      <PrevButton
-        hasPrev={hasPrev}
-        onClickPagination={onClickPagination}
-        currentPage={currentPage}
-      />
+      <PrevButton onClickPagination={onClickPagination} currentPage={currentPage} />
       {pageNumbers.map((pageNumber) => (
         <PaginateButton
           key={pageNumber}
@@ -53,9 +41,9 @@ export const Pagination = ({
       ))}
       <Ellipsis />
       <NextButton
-        hasNext={hasNext}
         onClickPagination={onClickPagination}
         currentPage={currentPage}
+        totalPages={totalPages}
       />
     </div>
   );
@@ -94,21 +82,16 @@ const PaginateButton = ({
 type PrevButtonProps = {
   className?: string;
   currentPage: number;
-  hasPrev: boolean;
   onClickPagination: (id: number) => void;
 } & React.HTMLAttributes<HTMLButtonElement>;
-const PrevButton = ({
-  className,
-  currentPage,
-  hasPrev,
-  onClickPagination,
-  ...props
-}: PrevButtonProps) => {
+const PrevButton = ({ className, currentPage, onClickPagination, ...props }: PrevButtonProps) => {
+  const hasPrev = currentPage > 1;
   const handleClickPrev = () => {
     if (hasPrev) {
       onClickPagination(currentPage - 1);
     }
   };
+  // if (!hasPrev) return null;
   return (
     <button
       className={`prev-button${className ? ` ${className}` : ""} `}
@@ -124,21 +107,23 @@ const PrevButton = ({
 type NextButtonProps = {
   className?: string;
   currentPage: number;
-  hasNext: boolean;
+  totalPages: number;
   onClickPagination: (id: number) => void;
 } & React.HTMLAttributes<HTMLButtonElement>;
 const NextButton = ({
   className,
-  hasNext,
   currentPage,
+  totalPages,
   onClickPagination,
   ...props
 }: NextButtonProps) => {
+  const hasNext = currentPage < totalPages;
   const handleClickNext = () => {
     if (hasNext) {
       onClickPagination(currentPage + 1);
     }
   };
+  // if (!hasNext) return null;
   return (
     <button
       className={`next-button${className ? ` ${className}` : ""} `}
