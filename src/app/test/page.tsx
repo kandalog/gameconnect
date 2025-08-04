@@ -5,16 +5,15 @@ import React from "react";
 import { Pagination } from "./Pagination";
 
 const page = () => {
-  const handleClickPageNumber = (id: string) => console.log("click page number");
-  const handleClickPrev = () => console.log("hello click prev");
-  const handleClickNext = () => console.log("hello click next");
+  const handleClickPageNumber = (id: number) => console.log(`hello ${id}`);
   return (
     <>
       <Pagination
-        onClickPageNumber={handleClickPageNumber}
-        onClickPrev={handleClickPrev}
-        onClickNext={handleClickNext}
-        currentPage="1"
+        currentPage={1}
+        hasPrev={true}
+        hasNext={true}
+        totalPages={100}
+        onClickPagination={handleClickPageNumber}
       />
     </>
   );

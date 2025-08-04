@@ -1,51 +1,72 @@
 import React from "react";
 
 type Props = {
-  currentPage: string;
-  onClickPrev: () => void;
-  onClickNext: () => void;
-  onClickPageNumber: (id: string) => void;
-  // TODO 以下を使って表示するべきページ数を計算する
-  // perPage: number;
-  // totalPages number;
+  currentPage: number;
+  onClickPagination: (id: number) => void;
+  totalPages: number;
+  hasPrev: boolean;
+  hasNext: boolean;
 };
 
-export const Pagination = ({ currentPage, onClickPrev, onClickNext, onClickPageNumber }: Props) => {
+export const Pagination = ({
+  currentPage,
+  onClickPagination,
+  hasPrev,
+  hasNext,
+  totalPages,
+}: Props) => {
+  const pageNumbers = calPageNumbers(currentPage, totalPages);
+  function calPageNumbers(currentPage: number, totalPages: number): number[] {
+    const pageNumbers = [];
+    if (currentPage === 1) {
+      for (let i = 1; i <= Math.min(3, totalPages); i++) {
+        pageNumbers.push(i);
+      }
+      return pageNumbers;
+    }
+    if (currentPage === totalPages) {
+      for (let i = Math.max(1, totalPages - 2); i <= totalPages; i++) {
+        pageNumbers.push(i);
+      }
+      return pageNumbers;
+    }
+    for (let i = currentPage - 1; i <= Math.min(currentPage + 1, totalPages); i++) {
+      pageNumbers.push(i);
+    }
+    return pageNumbers;
+  }
+
   return (
     <div className="border text-center">
-      <PrevButton onClickPrev={onClickPrev} />
-      <PaginateButton
-        pageNumber="1"
-        isActive={currentPage === "1"}
-        onClickPageNumber={onClickPageNumber}
+      <PrevButton
+        hasPrev={hasPrev}
+        onClickPagination={onClickPagination}
+        currentPage={currentPage}
       />
-      <PaginateButton
-        pageNumber="2"
-        isActive={currentPage === "2"}
-        onClickPageNumber={onClickPageNumber}
-      />
-      <PaginateButton
-        pageNumber="3"
-        isActive={currentPage === "3"}
-        onClickPageNumber={onClickPageNumber}
-      />
+      {pageNumbers.map((pageNumber) => (
+        <PaginateButton
+          key={pageNumber}
+          pageNumber={pageNumber}
+          isActive={currentPage === pageNumber}
+          onClickPageNumber={onClickPagination}
+        />
+      ))}
       <Ellipsis />
-      <PaginateButton
-        pageNumber="10"
-        isActive={currentPage === "10"}
-        onClickPageNumber={onClickPageNumber}
+      <NextButton
+        hasNext={hasNext}
+        onClickPagination={onClickPagination}
+        currentPage={currentPage}
       />
-      <NextButton onClickNext={onClickNext} />
     </div>
   );
 };
 
 // Page Number Button Component
 type PaginateButtonProps = {
-  pageNumber: string;
+  pageNumber: number;
   className?: string;
   isActive?: boolean;
-  onClickPageNumber: (id: string) => void;
+  onClickPageNumber: (id: number) => void;
 } & React.HTMLAttributes<HTMLButtonElement>;
 const PaginateButton = ({
   pageNumber,
@@ -61,8 +82,8 @@ const PaginateButton = ({
   return (
     <button
       className={`pagination-button${className ? ` ${className}` : ""} ${isActive ? "active" : ""}`}
-      {...props}
       onClick={handleClickPageNumber}
+      {...props}
     >
       {pageNumber}
     </button>
@@ -72,14 +93,27 @@ const PaginateButton = ({
 // Prev Button Component
 type PrevButtonProps = {
   className?: string;
-  onClickPrev: () => void;
+  currentPage: number;
+  hasPrev: boolean;
+  onClickPagination: (id: number) => void;
 } & React.HTMLAttributes<HTMLButtonElement>;
-const PrevButton = ({ className, onClickPrev, ...props }: PrevButtonProps) => {
+const PrevButton = ({
+  className,
+  currentPage,
+  hasPrev,
+  onClickPagination,
+  ...props
+}: PrevButtonProps) => {
+  const handleClickPrev = () => {
+    if (hasPrev) {
+      onClickPagination(currentPage - 1);
+    }
+  };
   return (
     <button
       className={`prev-button${className ? ` ${className}` : ""} `}
+      onClick={handleClickPrev}
       {...props}
-      onClick={onClickPrev}
     >
       &lt;
     </button>
@@ -89,14 +123,27 @@ const PrevButton = ({ className, onClickPrev, ...props }: PrevButtonProps) => {
 // Next Button Component
 type NextButtonProps = {
   className?: string;
-  onClickNext: () => void;
+  currentPage: number;
+  hasNext: boolean;
+  onClickPagination: (id: number) => void;
 } & React.HTMLAttributes<HTMLButtonElement>;
-const NextButton = ({ className, onClickNext, ...props }: NextButtonProps) => {
+const NextButton = ({
+  className,
+  hasNext,
+  currentPage,
+  onClickPagination,
+  ...props
+}: NextButtonProps) => {
+  const handleClickNext = () => {
+    if (hasNext) {
+      onClickPagination(currentPage + 1);
+    }
+  };
   return (
     <button
       className={`next-button${className ? ` ${className}` : ""} `}
+      onClick={handleClickNext}
       {...props}
-      onClick={onClickNext}
     >
       &gt;
     </button>
