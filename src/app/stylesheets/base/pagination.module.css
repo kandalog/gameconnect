@@ -6,7 +6,7 @@
   margin-left: 5px;
 }
 
-.pagination-button.active {
+.pagination-button:global(.active) {
   background-color: #5865f2;
   color: white;
 }

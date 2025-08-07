@@ -2,6 +2,8 @@
 
 import React from "react";
 
+import styles from "@/app/stylesheets/base/pagination.module.css";
+
 // TODO Generics型を使用してitemsを受け取る
 type Props = {
   currentPage: number;
@@ -72,7 +74,7 @@ const PaginateButton = ({
   };
   return (
     <button
-      className={`pagination-button${className ? ` ${className}` : ""} ${isActive ? "active" : ""}`}
+      className={`${styles["pagination-button"]}${className ? ` ${className}` : ""} ${isActive ? "active" : ""}`}
       onClick={handleClickPageNumber}
       {...props}
     >
@@ -97,7 +99,7 @@ const PrevButton = ({ className, currentPage, onClickPagination, ...props }: Pre
   // if (!hasPrev) return null;
   return (
     <button
-      className={`prev-button${className ? ` ${className}` : ""} `}
+      className={`${styles["prev-button"]}${className ? ` ${className}` : ""} `}
       onClick={handleClickPrev}
       {...props}
     >
@@ -129,7 +131,7 @@ const NextButton = ({
   // if (!hasNext) return null;
   return (
     <button
-      className={`next-button${className ? ` ${className}` : ""} `}
+      className={`${styles["next-button"]}${className ? ` ${className}` : ""} `}
       onClick={handleClickNext}
       {...props}
     >
@@ -140,5 +142,5 @@ const NextButton = ({
 
 // Ellipsis
 const Ellipsis = () => {
-  return <div className="ellipsis">...</div>;
+  return <div className={styles["ellipsis"]}>...</div>;
 };
