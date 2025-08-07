@@ -1,11 +1,9 @@
-import { FormSection } from "@/components/features/home/FormSection";
-import { FriendRequestList } from "@/components/features/home/FriendRequestList";
+import { HomeContainer } from "@/components/features/home/HomeContainer";
 
 export default function Home() {
   return (
     <>
-      <FormSection />
-      <FriendRequestList />
+      <HomeContainer initialFriendRequests={[]} />
     </>
   );
 }
