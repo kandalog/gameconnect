@@ -1,7 +1,7 @@
 import React from "react";
 import Link from "next/link";
 
-import styles from "@/app/stylesheets/base/pagination.module.css";
+import styles from "@/stylesheets/base/pagination.module.css";
 
 type Props = {
   currentPage: number;
