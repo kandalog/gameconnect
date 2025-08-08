@@ -4,6 +4,8 @@
   border-radius: 100px;
   cursor: pointer;
   margin-left: 5px;
+  display: inline-block;
+  line-height: 40px;
 }
 
 .pagination-button:global(.active) {
@@ -18,7 +20,8 @@
   cursor: pointer;
   color: gray;
   font-weight: bold;
-  margin-right: 12px;
+
+  display: inline-block;
 }
 
 .next-button {
@@ -28,7 +31,7 @@
   cursor: pointer;
   color: gray;
   font-weight: bold;
-  margin-left: 12px;
+  display: inline-block;
 }
 
 .ellipsis {

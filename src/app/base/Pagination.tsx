@@ -1,17 +1,14 @@
-"use client";
-
 import React from "react";
+import Link from "next/link";
 
 import styles from "@/app/stylesheets/base/pagination.module.css";
 
-// TODO Generics型を使用してitemsを受け取る
 type Props = {
   currentPage: number;
   totalPages: number;
-  onClickPageNumber: (id: number) => void;
 };
 
-export const Pagination = ({ currentPage, totalPages, onClickPageNumber }: Props) => {
+export const Pagination = ({ currentPage, totalPages }: Props) => {
   const pageNumbers = calPageNumbers(currentPage, totalPages);
   function calPageNumbers(currentPage: number, totalPages: number): number[] {
     const pageNumbers = [];
@@ -35,108 +32,76 @@ export const Pagination = ({ currentPage, totalPages, onClickPageNumber }: Props
 
   return (
     <div className="border text-center">
-      <PrevButton onClickPagination={onClickPageNumber} currentPage={currentPage} />
+      <PrevButton currentPage={currentPage} />
       {pageNumbers.map((pageNumber) => (
         <PaginateButton
           key={pageNumber}
           pageNumber={pageNumber}
           isActive={currentPage === pageNumber}
-          onClickPageNumber={onClickPageNumber}
         />
       ))}
       {totalPages > 3 && <Ellipsis />}
-      <NextButton
-        onClickPagination={onClickPageNumber}
-        currentPage={currentPage}
-        totalPages={totalPages}
-      />
+      <NextButton currentPage={currentPage} totalPages={totalPages} />
     </div>
   );
 };
 
-// Page Number Button Component
+// Page Number Link Component
 type PaginateButtonProps = {
   pageNumber: number;
   className?: string;
   isActive?: boolean;
-  onClickPageNumber: (id: number) => void;
-} & React.HTMLAttributes<HTMLButtonElement>;
-const PaginateButton = ({
-  pageNumber,
-  className,
-  isActive,
-  onClickPageNumber,
-  ...props
-}: PaginateButtonProps) => {
-  // ボタン押下のハンドラー
-  const handleClickPageNumber = () => {
-    onClickPageNumber(pageNumber);
-  };
+} & React.HTMLAttributes<HTMLAnchorElement>;
+const PaginateButton = ({ pageNumber, className, isActive, ...props }: PaginateButtonProps) => {
   return (
-    <button
+    <Link
+      href={`?page=${pageNumber}`}
       className={`${styles["pagination-button"]}${className ? ` ${className}` : ""} ${isActive ? "active" : ""}`}
-      onClick={handleClickPageNumber}
       {...props}
     >
       {pageNumber}
-    </button>
+    </Link>
   );
 };
 
-// Prev Button Component
+// Prev Link Component
 type PrevButtonProps = {
   className?: string;
   currentPage: number;
-  onClickPagination: (id: number) => void;
-} & React.HTMLAttributes<HTMLButtonElement>;
-const PrevButton = ({ className, currentPage, onClickPagination, ...props }: PrevButtonProps) => {
-  const hasPrev = currentPage > 1;
-  const handleClickPrev = () => {
-    if (hasPrev) {
-      onClickPagination(currentPage - 1);
-    }
-  };
+} & React.HTMLAttributes<HTMLAnchorElement>;
+const PrevButton = ({ className, currentPage, ...props }: PrevButtonProps) => {
+  // const hasPrev = currentPage > 1;
   // if (!hasPrev) return null;
+  const pageNumber = currentPage > 1 ? currentPage - 1 : currentPage;
   return (
-    <button
+    <Link
+      href={`?page=${pageNumber}`}
       className={`${styles["prev-button"]}${className ? ` ${className}` : ""} `}
-      onClick={handleClickPrev}
       {...props}
     >
       &lt;
-    </button>
+    </Link>
   );
 };
 
-// Next Button Component
+// Next Link Component
 type NextButtonProps = {
   className?: string;
   currentPage: number;
   totalPages: number;
-  onClickPagination: (id: number) => void;
-} & React.HTMLAttributes<HTMLButtonElement>;
-const NextButton = ({
-  className,
-  currentPage,
-  totalPages,
-  onClickPagination,
-  ...props
-}: NextButtonProps) => {
-  const hasNext = currentPage < totalPages;
-  const handleClickNext = () => {
-    if (hasNext) {
-      onClickPagination(currentPage + 1);
-    }
-  };
+} & React.HTMLAttributes<HTMLAnchorElement>;
+const NextButton = ({ className, currentPage, totalPages, ...props }: NextButtonProps) => {
+  // const hasNext = currentPage < totalPages;
   // if (!hasNext) return null;
+  const pageNumber = currentPage < totalPages ? currentPage + 1 : currentPage;
   return (
-    <button
+    <Link
+      href={`?page=${pageNumber}`}
       className={`${styles["next-button"]}${className ? ` ${className}` : ""} `}
-      onClick={handleClickNext}
       {...props}
     >
       &gt;
-    </button>
+    </Link>
   );
 };
 
