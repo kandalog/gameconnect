@@ -4,8 +4,8 @@ import { Noto_Sans_JP } from "next/font/google";
 
 import { Toaster } from "@/components/ui/sonner";
 
-import "./stylesheets/reset.css";
-import "./stylesheets/globals.css";
+import "../stylesheets/reset.css";
+import "../stylesheets/globals.css";
 
 const notoSansJp = Noto_Sans_JP({
   weight: ["400", "700"],

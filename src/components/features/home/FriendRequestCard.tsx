@@ -3,7 +3,7 @@ import React from "react";
 import { Files, Timer } from "lucide-react";
 import { toast } from "sonner";
 
-import { Card } from "@/app/base/Card";
+import { Card } from "@/components/base/Card";
 import { Button } from "@/components/ui/button";
 
 const handleCopyDiscordId = (id: string) => {

@@ -1,7 +1,7 @@
 import { FormSection } from "@/components/features/home/FormSection";
 import { FriendRequestList } from "@/components/features/home/FriendRequestList";
 
-import { Pagination } from "../base/Pagination";
+import { Pagination } from "../../components/base/Pagination";
 
 type Props = {
   searchParams: {

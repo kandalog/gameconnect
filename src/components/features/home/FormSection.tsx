@@ -1,11 +1,11 @@
 import React from "react";
 
-import { Card } from "@/app/base/Card";
-import { FormRow } from "@/app/base/form/FormRow";
-import { Input } from "@/app/base/form/Input";
-import { Label } from "@/app/base/form/Label";
-import { Radio } from "@/app/base/form/Radio";
-import { TextArea } from "@/app/base/form/TextArea";
+import { Card } from "@/components/base/Card";
+import { FormRow } from "@/components/base/form/FormRow";
+import { Input } from "@/components/base/form/Input";
+import { Label } from "@/components/base/form/Label";
+import { Radio } from "@/components/base/form/Radio";
+import { TextArea } from "@/components/base/form/TextArea";
 import { Button } from "@/components/ui/button";
 
 export const FormSection = () => {
