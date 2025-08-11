@@ -4,13 +4,12 @@ import { FriendRequestList } from "@/components/features/home/FriendRequestList"
 import { Pagination } from "../../components/base/Pagination";
 
 type Props = {
-  searchParams: {
-    page?: string;
-  };
+  searchParams: Promise<{ page?: string }>;
 };
 
 export default async function Home({ searchParams }: Props) {
-  const page = Number(searchParams.page) || 1;
+  const params = await searchParams;
+  const page = Number(params.page) || 1;
 
   return (
     <>
