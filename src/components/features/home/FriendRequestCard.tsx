@@ -6,17 +6,20 @@ import { toast } from "sonner";
 import { Card } from "@/components/base/Card";
 import { Button } from "@/components/ui/button";
 
+type Props = {
+  className?: string;
+};
+
 const handleCopyDiscordId = (id: string) => {
-  // TODO
   navigator.clipboard.writeText(id);
   toast.success("Discord IDをコピーしました", {
     description: id,
   });
 };
 
-export const FriendRequestCard = () => {
+export const FriendRequestCard = ({ className }: Props) => {
   return (
-    <Card>
+    <Card className={className}>
       {/* header */}
       <div>
         <p className="text-primary font-bold">ApexMaster#7857</p>

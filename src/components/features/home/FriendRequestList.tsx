@@ -8,8 +8,8 @@ export const FriendRequestList = () => {
   return (
     <div className="mt-8">
       <Title>最新の募集</Title>
-      <FriendRequestCard />
-      <FriendRequestCard />
+      <FriendRequestCard className="mt-4" />
+      <FriendRequestCard className="mt-4" />
     </div>
   );
 };
