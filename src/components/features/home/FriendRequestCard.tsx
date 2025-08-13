@@ -1,10 +1,12 @@
 "use client";
 import React from "react";
+import { FateTriggerFriendRequest } from "@prisma/client";
 import { Files, Timer } from "lucide-react";
 import { toast } from "sonner";
 
 import { Card } from "@/components/base/Card";
 import { Button } from "@/components/ui/button";
+import { formatDate, formatRemainingTime } from "@/lib/formatters";
 
 const handleCopyDiscordId = (id: string) => {
   navigator.clipboard.writeText(id);
@@ -13,21 +15,21 @@ const handleCopyDiscordId = (id: string) => {
   });
 };
 
-export const FriendRequestCard = () => {
+type Props = {
+  friendRequest: FateTriggerFriendRequest;
+};
+
+export const FriendRequestCard = ({ friendRequest }: Props) => {
   return (
     <Card className="mt-4">
       {/* header */}
       <div>
-        <p className="text-primary font-bold">ApexMaster#7857</p>
-        <span className="text-gray text-sm">2024年12月15日 14:30</span>
+        <p className="text-primary font-bold">{friendRequest.discordId}</p>
+        <span className="text-gray text-sm">{formatDate(friendRequest.createdAt)}</span>
       </div>
       {/* contents */}
       <div className="mt-4">
-        <p className="text-[#374151]">
-          Apex Legends
-          でランク戦を一緒にやってくれる仲間を募集しています!現在ダイヤモンドランクで、プレデターを目指しています。VC
-          必須で、平日の夜 20:00-24:00 頃に活動できる方を探しています。初心者の方でも大歓迎です！
-        </p>
+        <p className="text-[#374151]">{friendRequest.content}</p>
       </div>
       {/* footer */}
       <div className="mt-4 lg:flex justify-between">
@@ -35,12 +37,15 @@ export const FriendRequestCard = () => {
           <span>
             <Timer className="w-4 h-4 text-gray-400" />
           </span>
-          <span className="ml-2 text-gray-500 text-sm">あと 6日</span>
-          <span className="ml-2 text-gray-400 text-sm">
-            ID: 7f8d9e2a-bc3d-4f5g-6h7i-8j9k0l1m2n3o
+          <span className="ml-2 text-gray-500 text-sm">
+            あと {formatRemainingTime(friendRequest.createdAt, friendRequest.expiredAt)}
           </span>
+          <span className="ml-2 text-gray-400 text-sm">ID: {friendRequest.id}</span>
         </div>
-        <Button className="cursor-pointer" onClick={() => handleCopyDiscordId("ApexMaster#7857")}>
+        <Button
+          className="cursor-pointer"
+          onClick={() => handleCopyDiscordId(friendRequest.discordId)}
+        >
           <span>
             <Files />
           </span>
