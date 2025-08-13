@@ -1,3 +1,5 @@
+import { FriendRequestItem } from "@/types/home";
+
 import { BASE_URL } from "../config";
 
 export const fetchFriendRequest = async (page: number) => {
@@ -7,6 +9,19 @@ export const fetchFriendRequest = async (page: number) => {
   if (!response.ok) {
     throw new Error("Network response was not ok");
   }
-  const data = await response.json();
+  const json = await response.json();
+
+  // APIレスポンスのanyは許可
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  const data: FriendRequestItem[] = json.data.map((item: any) => {
+    return {
+      id: item.id,
+      gender: item.gender,
+      discordId: item.discordId,
+      content: item.content,
+      expiredAt: new Date(item.expiredAt),
+      createdAt: new Date(item.createdAt),
+    };
+  });
   return data;
 };
