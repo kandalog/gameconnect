@@ -12,3 +12,17 @@ datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
 }
+
+model FateTriggerFriendRequest {
+  id        String   @id @default(cuid())
+  gender    Gender
+  discordId String
+  content   String
+  expiredAt DateTime
+  createdAt DateTime @default(now())
+}
+
+enum Gender {
+  male
+  female
+}
