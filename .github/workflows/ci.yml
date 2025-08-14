@@ -49,7 +49,7 @@ jobs:
 
       - name: Run Prisma Migrate Deploy
         env:
-          DATABASE_URL: ${{ secrets.DIRECT_URL }}
+          DIRECT_URL: ${{ secrets.DIRECT_URL }}
         run: npx prisma migrate deploy
   build:
     needs: migrate
