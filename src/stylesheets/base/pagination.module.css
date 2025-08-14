@@ -1,0 +1,40 @@
+.pagination-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 100px;
+  cursor: pointer;
+  margin-left: 5px;
+  display: inline-block;
+  line-height: 40px;
+}
+
+.pagination-button:global(.active) {
+  background-color: #5865f2;
+  color: white;
+}
+
+.prev-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 100px;
+  cursor: pointer;
+  color: gray;
+  font-weight: bold;
+
+  display: inline-block;
+}
+
+.next-button {
+  width: 40px;
+  height: 40px;
+  border-radius: 100px;
+  cursor: pointer;
+  color: gray;
+  font-weight: bold;
+  display: inline-block;
+}
+
+.ellipsis {
+  color: gray;
+  display: inline-block;
+}
