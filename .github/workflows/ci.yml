@@ -31,6 +31,7 @@ jobs:
   migrate:
     needs: ci
     runs-on: ubuntu-latest
+    environment: production
     if: github.ref == 'refs/heads/main' && github.event_name == 'push'
 
     steps:
