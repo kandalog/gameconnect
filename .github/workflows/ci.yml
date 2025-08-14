@@ -48,7 +48,7 @@ jobs:
 
       - name: Run Prisma Migrate Deploy
         env:
-          DATABASE_URL: ${{ secrets.SUPABASE_DB_URL }}
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
         run: npx prisma migrate deploy
   build:
     needs: migrate
