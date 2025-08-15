@@ -12,6 +12,8 @@ export default async function Home({ searchParams }: Props) {
   const params = await searchParams;
   const page = Number(params.page) || 1;
 
+  console.log("hello page.tsx. the page number", page);
+
   const data = await fetchFriendRequest(page);
 
   return (
