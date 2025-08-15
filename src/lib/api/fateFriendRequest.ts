@@ -3,10 +3,7 @@ import { FriendRequestItem } from "@/types/home";
 import { BASE_URL } from "../config";
 
 export const fetchFriendRequest = async (page: number) => {
-  // APIをリクエスト
   const URI = `${BASE_URL}?page=${page}`;
-  console.log("BASE_URL", BASE_URL);
-  console.log("Fetching friend requests starting from:", URI);
   const response = await fetch(URI);
   if (!response.ok) {
     throw new Error("Network response was not ok");

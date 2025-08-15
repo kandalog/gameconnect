@@ -1,15 +1,17 @@
 import React from "react";
-import { FateTriggerFriendRequest } from "@prisma/client";
 
 import { Title } from "@/components/common/Title";
+import { fetchFriendRequest } from "@/lib/api/fateFriendRequest";
 
 import { FriendRequestCard } from "./FriendRequestCard";
 
 type Props = {
-  friendRequests: FateTriggerFriendRequest[];
+  page: number;
 };
 
-export const FriendRequestList = ({ friendRequests }: Props) => {
+export const FriendRequestList = async ({ page }: Props) => {
+  const friendRequests = await fetchFriendRequest(page);
+
   return (
     <div className="mt-8">
       <Title>最新の募集</Title>
