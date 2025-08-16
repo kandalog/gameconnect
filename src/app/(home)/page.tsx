@@ -19,7 +19,7 @@ export default async function Home({ searchParams }: Props) {
       <Suspense key={page} fallback={<div>Loading...</div>}>
         <FriendRequestList page={page} />
       </Suspense>
-      <Pagination currentPage={page} totalPages={3} />
+      <Pagination className="mt-4" currentPage={page} totalPages={3} />
     </>
   );
 }

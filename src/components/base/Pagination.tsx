@@ -6,9 +6,10 @@ import styles from "@/stylesheets/base/pagination.module.css";
 type Props = {
   currentPage: number;
   totalPages: number;
+  className?: string;
 };
 
-export const Pagination = ({ currentPage, totalPages }: Props) => {
+export const Pagination = ({ currentPage, totalPages, className }: Props) => {
   const pageNumbers = calPageNumbers(currentPage, totalPages);
   function calPageNumbers(currentPage: number, totalPages: number): number[] {
     const pageNumbers = [];
@@ -31,7 +32,7 @@ export const Pagination = ({ currentPage, totalPages }: Props) => {
   }
 
   return (
-    <div className="border text-center">
+    <div className={`text-center${className ? ` ${className}` : ""}`}>
       <PrevButton currentPage={currentPage} />
       {pageNumbers.map((pageNumber) => (
         <PaginateButton

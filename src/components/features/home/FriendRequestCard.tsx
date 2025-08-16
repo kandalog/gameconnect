@@ -32,7 +32,7 @@ export const FriendRequestCard = ({ friendRequest }: Props) => {
         <p className="text-[#374151]">{friendRequest.content}</p>
       </div>
       {/* footer */}
-      <div className="mt-4 lg:flex justify-between">
+      <div className="mt-4 lg:flex justify-between text-right">
         <div className="flex items-center">
           <span>
             <Timer className="w-4 h-4 text-gray-400" />
@@ -42,8 +42,9 @@ export const FriendRequestCard = ({ friendRequest }: Props) => {
           </span>
           <span className="ml-2 text-gray-400 text-sm">ID: {friendRequest.id}</span>
         </div>
+
         <Button
-          className="cursor-pointer"
+          className="cursor-pointer max-lg:mt-4"
           onClick={() => handleCopyDiscordId(friendRequest.discordId)}
         >
           <span>

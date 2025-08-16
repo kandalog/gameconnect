@@ -6,6 +6,7 @@ import { Toaster } from "@/components/ui/sonner";
 
 import "../stylesheets/reset.css";
 import "../stylesheets/globals.css";
+import "../stylesheets/custom.css";
 
 const notoSansJp = Noto_Sans_JP({
   weight: ["400", "700"],
