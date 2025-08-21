@@ -14,16 +14,18 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-model FateTriggerFriendRequest {
+model FriendRequest {
   id        String   @id @default(cuid())
-  gender    Gender
   discordId String
   content   String
   expiredAt DateTime
   createdAt DateTime @default(now())
+  gameId   String
+  game     Game     @relation(fields: [gameId], references: [id])
 }
 
-enum Gender {
-  male
-  female
+model Game {
+  id    String @id @default(cuid())
+  title String
+  fateTriggerFriendRequests FriendRequest[]
 }
