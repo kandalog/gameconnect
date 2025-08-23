@@ -2,8 +2,8 @@ import { FriendRequestItem } from "@/types/home";
 
 import { BASE_URL } from "../config";
 
-export const fetchFriendRequest = async (page: number) => {
-  const URI = `${BASE_URL}?page=${page}`;
+export const fetchFriendRequest = async (page: number, game: string) => {
+  const URI = `${BASE_URL}/friend-request?page=${page}&game=${game}`;
   const response = await fetch(URI);
   if (!response.ok) {
     throw new Error("Network response was not ok");
@@ -15,7 +15,6 @@ export const fetchFriendRequest = async (page: number) => {
   const data: FriendRequestItem[] = json.data.map((item: any) => {
     return {
       id: item.id,
-      gender: item.gender,
       discordId: item.discordId,
       content: item.content,
       expiredAt: new Date(item.expiredAt),

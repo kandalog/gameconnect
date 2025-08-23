@@ -1,12 +1,12 @@
 "use client";
 import React from "react";
-import { FateTriggerFriendRequest } from "@prisma/client";
 import { Files, Timer } from "lucide-react";
 import { toast } from "sonner";
 
 import { Card } from "@/components/base/Card";
 import { Button } from "@/components/ui/button";
 import { formatDate, formatRemainingTime } from "@/lib/formatters";
+import type { FriendRequestItem } from "@/types/home";
 
 const handleCopyDiscordId = (id: string) => {
   navigator.clipboard.writeText(id);
@@ -16,7 +16,7 @@ const handleCopyDiscordId = (id: string) => {
 };
 
 type Props = {
-  friendRequest: FateTriggerFriendRequest;
+  friendRequest: FriendRequestItem;
 };
 
 export const FriendRequestCard = ({ friendRequest }: Props) => {

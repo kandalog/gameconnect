@@ -1,8 +1,8 @@
 export type FriendRequestItem = {
   id: string;
-  gender: "male" | "female";
   discordId: string;
   content: string;
+  gameId: string;
   expiredAt: Date;
   createdAt: Date;
 };
