@@ -26,6 +26,6 @@ model FriendRequest {
 
 model Game {
   id    String @id @default(cuid())
-  title String
+  title String @unique
   fateTriggerFriendRequests FriendRequest[]
 }

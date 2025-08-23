@@ -18,5 +18,8 @@ CREATE TABLE "public"."Game" (
     CONSTRAINT "Game_pkey" PRIMARY KEY ("id")
 );
 
+-- CreateIndex
+CREATE UNIQUE INDEX "Game_title_key" ON "public"."Game"("title");
+
 -- AddForeignKey
 ALTER TABLE "public"."FriendRequest" ADD CONSTRAINT "FriendRequest_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "public"."Game"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
