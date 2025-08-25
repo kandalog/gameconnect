@@ -2,41 +2,61 @@ import { type NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 import { prisma } from "@/lib/prisma";
+import { getFriendRequestsSchema } from "@/lib/schema/friend-request";
+import { formatZodErrors } from "@/lib/validation";
 
-// TODO Zodでvalidation
 export async function GET(req: NextRequest) {
-  const searchParams = req.nextUrl.searchParams;
-  const page = Number(searchParams.get("page")) || 1;
-  const gameName = searchParams.get("game");
+  // validation
+  const params = Object.fromEntries(req.nextUrl.searchParams.entries());
+  const result = getFriendRequestsSchema.safeParse(params);
 
-  // 不可変のためハードコード
-  const perPage = 10;
-  const offset = (page - 1) * perPage;
-
-  const friendRequests = await prisma.friendRequest.findMany({
-    skip: offset,
-    take: perPage,
-    orderBy: { createdAt: "desc" },
-    where: {
-      game: {
-        title: gameName!,
-      },
-    },
-    include: {
-      game: true,
-    },
-  });
-
-  // lengthが0の時だけマスターデータの存在性をチェック
-  if (friendRequests.length === 0) {
-    const gameExists = await prisma.game.findUnique({
-      where: { title: gameName! },
-    });
-
-    if (!gameExists) {
-      return NextResponse.json({ error: "not found" }, { status: 404 });
-    }
+  if (!result.success) {
+    return NextResponse.json(
+      { success: false, errors: formatZodErrors(result.error) },
+      { status: 422 },
+    );
   }
 
-  return NextResponse.json({ data: friendRequests });
+  try {
+    const { game, page } = result.data;
+
+    const perPage = 10;
+    const offset = (page - 1) * perPage;
+
+    const friendRequests = await prisma.friendRequest.findMany({
+      skip: offset,
+      take: perPage,
+      orderBy: { createdAt: "desc" },
+      where: {
+        game: {
+          title: game,
+        },
+      },
+      include: {
+        game: true,
+      },
+    });
+
+    // lengthが0の時だけマスターデータの存在性をチェック
+    if (friendRequests.length === 0) {
+      const gameExists = await prisma.game.findUnique({
+        where: { title: game },
+      });
+
+      if (!gameExists) {
+        return NextResponse.json(
+          { success: false, error: { code: 404, message: "対象外のゲームが指定されました" } },
+          { status: 404 },
+        );
+      }
+    }
+
+    return NextResponse.json({ success: true, data: friendRequests });
+  } catch (error) {
+    console.error(error);
+    return NextResponse.json(
+      { success: false, error: { code: 500, message: "エラーが発生しました" } },
+      { status: 500 },
+    );
+  }
 }
