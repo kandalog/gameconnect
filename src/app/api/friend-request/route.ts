@@ -1,6 +1,7 @@
 import { type NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
+import logger from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 import { getFriendRequestsSchema } from "@/lib/schema/friend-request";
 import { formatZodErrors } from "@/lib/validation";
@@ -39,6 +40,8 @@ export async function GET(req: NextRequest) {
 
     // lengthが0の時だけマスターデータの存在性をチェック
     if (friendRequests.length === 0) {
+      logger.info("マスターデータの存在性をチェックします", { game });
+
       const gameExists = await prisma.game.findUnique({
         where: { title: game },
       });
@@ -53,7 +56,7 @@ export async function GET(req: NextRequest) {
 
     return NextResponse.json({ success: true, data: friendRequests });
   } catch (error) {
-    console.error(error);
+    logger.error("フレンドリクエスト一覧取得中にエラーが発生しました", { error });
     return NextResponse.json(
       { success: false, error: { code: 500, message: "エラーが発生しました" } },
       { status: 500 },
