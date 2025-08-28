@@ -1,6 +1,9 @@
 "use client";
 
-import React, { useState } from "react";
+import React from "react";
+import { Controller, useForm } from "react-hook-form";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as zod from "zod";
 
 import { Card } from "@/components/base/Card";
 import { BaseSelect } from "@/components/base/form/BaseSelect";
@@ -8,8 +11,8 @@ import { FormRow } from "@/components/base/form/FormRow";
 import { Input } from "@/components/base/form/Input";
 import { Label } from "@/components/base/form/Label";
 import { TextArea } from "@/components/base/form/TextArea";
+import { FormErrorMessage } from "@/components/common/FormErrorMessage";
 import { Button } from "@/components/ui/button";
-import { FormData } from "@/types/home";
 
 const displayDurationOptions = [
   { label: "24時間", value: String(60 * 24) },
@@ -18,57 +21,70 @@ const displayDurationOptions = [
   { label: "1ヶ月", value: String(60 * 24 * 30) },
 ];
 
+const schema = zod.object({
+  discordId: zod.string().min(1, { message: "必須項目です" }),
+  displayDuration: zod.string().min(1, { message: "必須項目です" }),
+  content: zod.string().min(1, { message: "必須項目です" }),
+});
+
+type FormData = zod.infer<typeof schema>;
+
 export const FormSection = () => {
-  // hooks
-  const [formData, setFormData] = useState<FormData>({
-    discordId: "",
-    displayDuration: "",
-    content: "",
+  const {
+    register,
+    handleSubmit,
+    control,
+    formState: { errors },
+  } = useForm({
+    resolver: zodResolver(schema), // 読み込む
+    defaultValues: {
+      discordId: "",
+      displayDuration: "",
+      content: "",
+    },
   });
 
-  // handlers
-  const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>,
-  ) => {
-    setFormData({
-      ...formData,
-      [e.target.name]: e.target.value,
-    });
+  const onSubmit = (formData: FormData) => {
+    // リクエストを投げる
+    // 遷移する
   };
 
   return (
     <div className="mt-10">
       <Card>
         <h2 className="font-bold text-[20px]">運命のトリガー フレンドを募集</h2>
-        <form>
+        <form onSubmit={handleSubmit(onSubmit)}>
           <FormRow>
             <Label>Discord ID</Label>
-            <Input
-              value={formData.discordId}
-              name="discordId"
-              onChange={handleChange}
-              placeholder="例: GameMate#1234"
-            />
+            <Input {...register("discordId")} placeholder="例: GameMate#1234" />
+            <FormErrorMessage message={errors.discordId?.message} />
           </FormRow>
           <FormRow>
             <Label>表示期間</Label>
-            <BaseSelect
-              options={displayDurationOptions}
-              value={formData.displayDuration}
+            {/* ライブラリなのでControllerで制御 */}
+            <Controller
               name="displayDuration"
-              onChange={handleChange}
+              control={control}
+              render={({ field }) => (
+                <BaseSelect
+                  options={displayDurationOptions}
+                  value={field.value}
+                  name={field.name}
+                  onChange={field.onChange}
+                />
+              )}
             />
+            <FormErrorMessage message={errors.displayDuration?.message} />
           </FormRow>
           <FormRow>
             <Label>募集内容</Label>
             <TextArea
-              value={formData.content}
-              name="content"
-              onChange={handleChange}
+              {...register("content")}
               placeholder="一緒に楽しく遊べる方、気軽にVCできる方を募集中です！"
             />
+            <FormErrorMessage message={errors.content?.message} className="mt-0" />
           </FormRow>
-          <Button type="submit" className="w-full mt-6">
+          <Button type="submit" className="w-full mt-6 cursor-pointer">
             投稿する
           </Button>
         </form>
