@@ -3,7 +3,7 @@ import { NextResponse } from "next/server";
 
 import logger from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
-import { getFriendRequestsSchema } from "@/lib/schema/friend-request";
+import { createFriendRequestSchema, getFriendRequestsSchema } from "@/lib/schema/friend-request";
 import { formatZodErrors } from "@/lib/validation";
 
 export async function GET(req: NextRequest) {
@@ -62,4 +62,22 @@ export async function GET(req: NextRequest) {
       { status: 500 },
     );
   }
+}
+
+export async function POST(req: NextRequest) {
+  const body = await req.json();
+  const result = createFriendRequestSchema.safeParse(body);
+
+  if (!result.success) {
+    return NextResponse.json(
+      { success: false, errors: formatZodErrors(result.error) },
+      { status: 422 },
+    );
+  }
+
+  const { game, discordId, content, duration } = result.data;
+
+  // Data作成
+
+  return NextResponse.json({ message: "hello world" });
 }
