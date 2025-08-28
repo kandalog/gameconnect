@@ -6,3 +6,9 @@ export type FriendRequestItem = {
   expiredAt: Date;
   createdAt: Date;
 };
+
+export interface FormData {
+  discordId: string;
+  displayDuration: string;
+  content: string;
+}
