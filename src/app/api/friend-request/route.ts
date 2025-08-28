@@ -4,6 +4,7 @@ import { NextResponse } from "next/server";
 import logger from "@/lib/logger";
 import { prisma } from "@/lib/prisma";
 import { createFriendRequestSchema, getFriendRequestsSchema } from "@/lib/schema/friend-request";
+import { calculateExpiredAt } from "@/lib/utils";
 import { formatZodErrors } from "@/lib/validation";
 
 export async function GET(req: NextRequest) {
@@ -55,8 +56,8 @@ export async function GET(req: NextRequest) {
     }
 
     return NextResponse.json({ success: true, data: friendRequests });
-  } catch (error) {
-    logger.error("フレンドリクエスト一覧取得中にエラーが発生しました", { error });
+  } catch (err) {
+    logger.error("フレンドリクエスト一覧取得中にエラーが発生しました", { err });
     return NextResponse.json(
       { success: false, error: { code: 500, message: "エラーが発生しました" } },
       { status: 500 },
@@ -65,19 +66,48 @@ export async function GET(req: NextRequest) {
 }
 
 export async function POST(req: NextRequest) {
-  const body = await req.json();
-  const result = createFriendRequestSchema.safeParse(body);
+  try {
+    const body = await req.json();
+    const result = createFriendRequestSchema.safeParse(body);
 
-  if (!result.success) {
+    if (!result.success) {
+      return NextResponse.json(
+        { success: false, errors: formatZodErrors(result.error) },
+        { status: 422 },
+      );
+    }
+
+    const { game, discordId, content, duration } = result.data;
+
+    const targetGame = await prisma.game.findUnique({
+      where: { title: game },
+    });
+
+    if (!targetGame) {
+      return NextResponse.json(
+        { success: false, error: { code: 404, message: "対象外のゲームが指定されました" } },
+        { status: 404 },
+      );
+    }
+
+    const friendRequest = await prisma.friendRequest.create({
+      data: {
+        game: {
+          connect: { id: targetGame.id },
+        },
+        discordId: discordId,
+        content: content,
+        expiredAt: calculateExpiredAt(duration),
+      },
+    });
+    logger.info("フレンドリクエストが作成されました", { friendRequest });
+
+    return NextResponse.json({ success: true, data: friendRequest });
+  } catch (err) {
+    logger.error("フレンドリクエスト作成中にエラーが発生しました", { err });
     return NextResponse.json(
-      { success: false, errors: formatZodErrors(result.error) },
-      { status: 422 },
+      { success: false, error: { code: 500, message: "エラーが発生しました" } },
+      { status: 500 },
     );
   }
-
-  const { game, discordId, content, duration } = result.data;
-
-  // Data作成
-
-  return NextResponse.json({ message: "hello world" });
 }
